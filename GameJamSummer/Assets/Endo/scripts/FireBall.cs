@@ -1,51 +1,48 @@
 ﻿using UnityEngine;
 
-public class FireBall : MonoBehaviour
+public class TestBullet : MonoBehaviour
 {
-    [Header("移動速度")]
-    [SerializeField]
-    private float MoveSpeed = 5.0f;
+    [Header("弾の設定")]
+    [SerializeField] private float speed = 5f;
 
-    [Header("バウンド可能回数")]
-    [SerializeField]
-    private int BoundCount = 3;
+    [Header("反射設定")]
+    [SerializeField] private int maxReflectCount = 3;
 
     private Rigidbody rb;
+    private int reflectCount;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Start()
+    public void Initialize(Vector3 direction)
     {
-        // 初期方向へ移動
-        rb.linearVelocity = transform.forward * MoveSpeed;
+        reflectCount = 0;
+        direction.y = 0f;
+        direction.Normalize();
+
+        rb.linearVelocity = direction * speed;
+    }
+
+    private void FixedUpdate()
+    {
+        // 速度を常に一定にする
+        if (rb.linearVelocity.sqrMagnitude > 0f)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * speed;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Wall"))
-        {
-            return;
-        }
+        reflectCount++;
 
-        Debug.Log($"Wall衝突！ BoundCount = {BoundCount}");
+        Debug.Log("反射回数 : " + reflectCount);
 
-        if (BoundCount <= 0)
+        if (reflectCount >= maxReflectCount)
         {
             Destroy(gameObject);
-            return;
         }
-
-        BoundCount--;
-
-        Vector3 direction = Vector3.Reflect(
-            rb.linearVelocity.normalized,
-            collision.contacts[0].normal
-        );
-
-        rb.linearVelocity = direction * MoveSpeed;
     }
-
 }
