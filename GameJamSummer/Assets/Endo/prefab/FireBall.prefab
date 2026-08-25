@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5185751269021144478}
   - component: {fileID: 5013317241528688176}
   - component: {fileID: 6001490282358311375}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FireBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,5 +153,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56fac9c2380dc3343a31d16669a7ae77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireBall
-  speed: 5
+  speed: 8
   maxReflectCount: 6

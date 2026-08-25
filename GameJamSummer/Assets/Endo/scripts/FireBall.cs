@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TestBullet : MonoBehaviour
+public class FireBullet : MonoBehaviour
 {
     [Header("弾の設定")]
     [SerializeField] private float speed = 5f;
@@ -19,6 +19,7 @@ public class TestBullet : MonoBehaviour
     public void Initialize(Vector3 direction)
     {
         reflectCount = 0;
+
         direction.y = 0f;
         direction.Normalize();
 
@@ -30,12 +31,19 @@ public class TestBullet : MonoBehaviour
         // 速度を常に一定にする
         if (rb.linearVelocity.sqrMagnitude > 0f)
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * speed;
+            rb.linearVelocity =
+                rb.linearVelocity.normalized * speed;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(),collision.collider);
+            return;
+        }
+
         reflectCount++;
 
         Debug.Log("反射回数 : " + reflectCount);
@@ -45,4 +53,5 @@ public class TestBullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 }

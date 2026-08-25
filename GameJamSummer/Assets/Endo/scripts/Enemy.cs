@@ -1,23 +1,25 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : EnemyBase
 {
-    [Header("’e‚Ìİ’è")]
+    [Header("å¼¾ã®è¨­å®š")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
 
-    [Header("”­ËŠÔŠu")]
+    [Header("ç™ºå°„é–“éš”")]
     [SerializeField] private float minShootInterval = 10f;
     [SerializeField] private float maxShootInterval = 15f;
 
-    [Header("”­Ë•ûŒü")]
+    [Header("ç™ºå°„æ–¹å‘")]
     [SerializeField] private float minAngle = 20f;
     [SerializeField] private float maxAngle = 70f;
 
+    private Animator animator;
     private float shootTimer;
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         SetNextShootTime();
     }
 
@@ -27,8 +29,8 @@ public class Enemy : MonoBehaviour
 
         if (shootTimer <= 0f)
         {
-            Shoot();
-            SetNextShootTime();
+            animator.SetTrigger("IsAttack");
+            shootTimer = float.MaxValue;
         }
     }
 
@@ -40,7 +42,8 @@ public class Enemy : MonoBehaviour
         );
     }
 
-    private void Shoot()
+    // Animation Eventã‹ã‚‰å‘¼ã³å‡ºã™
+    public void Shoot()
     {
         GameObject bullet = Instantiate(
             bulletPrefab,
@@ -48,23 +51,26 @@ public class Enemy : MonoBehaviour
             Quaternion.identity
         );
 
-        // 20`70“x‚Ì”ÍˆÍ‚©‚çƒ‰ƒ“ƒ_ƒ€
+        // 20ï½70åº¦ã®ç¯„å›²ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ 
         float angle = Random.Range(minAngle, maxAngle);
 
-        // ¶‰E‚Ç‚¿‚ç‚©
+        // å·¦å³ã©ã¡ã‚‰ã‹
         if (Random.value < 0.5f)
         {
             angle *= -1f;
         }
 
-        // XZ•½–Êã‚Ì•ûŒü
+        // XZå¹³é¢ä¸Šã®æ–¹å‘
         Vector3 direction = new Vector3(
             Mathf.Cos(angle * Mathf.Deg2Rad),
             0f,
             Mathf.Sin(angle * Mathf.Deg2Rad)
         );
 
-        bullet.GetComponent<TestBullet>()
+        bullet.GetComponent<FireBullet>()
             .Initialize(direction);
+
+        // æ¬¡ã®æ”»æ’ƒã¾ã§ã®æ™‚é–“ã‚’è¨­å®š
+        SetNextShootTime();
     }
 }

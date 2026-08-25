@@ -9,6 +9,7 @@ TagManager:
   - Obstcales
   - Wall
   - TakeDamage
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -16,11 +17,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Trap
+  - Player
+  - Enemy
+  - Boss
+  - Bullet
   - 
   - 
   - 
