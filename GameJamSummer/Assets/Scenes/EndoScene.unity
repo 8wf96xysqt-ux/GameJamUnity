@@ -2394,6 +2394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Boss
   maxHp: 10
   player: {fileID: 317744174}
+  animator: {fileID: 1861702061}
   bulletPrefab: {fileID: 6512504246549903755, guid: 3c54c93aeb367bd4c83eac2ca2d622f0, type: 3}
   bulletSpawnPoint: {fileID: 1739411531}
   minAngle: 20
@@ -2407,8 +2408,7 @@ MonoBehaviour:
   - {fileID: 1027247375}
   - {fileID: 43719616}
   attackInterval: 1
-  rushSpeed: 15
-  rushDuration: 1.5
+  rushSpeed: 35
   turnSpeed: 3
   rushWarning: {fileID: 1893797816}
   warningTime: 1.5
@@ -2460,6 +2460,11 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 36
   m_CollisionDetection: 0
+--- !u!95 &1861702061 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9586004, guid: eb58e8f2831a51f45a44a261e6710cdd, type: 3}
+  m_PrefabInstance: {fileID: 1617119606}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1893797816
 GameObject:
   m_ObjectHideFlags: 0
@@ -2777,7 +2782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1931298151966786, guid: 928a1377c1cd4515b208fef3a396b8ea, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4047972025199878, guid: 928a1377c1cd4515b208fef3a396b8ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2909,7 +2914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1067925524328404, guid: 6bbfea6690ef7724ba495c866081f855, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1088256926929212, guid: 6bbfea6690ef7724ba495c866081f855, type: 3}
       propertyPath: m_Layer

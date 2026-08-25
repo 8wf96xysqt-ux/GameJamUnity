@@ -7,6 +7,9 @@ public class Boss : EnemyBase
     [Header("プレイヤー")]
     [SerializeField] private Transform player;
 
+    [Header("Animator")]
+    [SerializeField] private Animator animator;
+
     [Header("弾")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
@@ -18,13 +21,13 @@ public class Boss : EnemyBase
     [Header("トラップ")]
     [SerializeField] private GameObject trapPrefab;
     [SerializeField] private List<Transform> spawnPointList;
-
+    private bool trapSpawned;
     [Header("攻撃間隔")]
     [SerializeField] private float attackInterval = 5f;
 
     [Header("突進")]
     [SerializeField] private float rushSpeed = 10f;
-    [SerializeField] private float rushDuration = 1.5f;
+
     [Header("攻撃後の振り向き")]
     [SerializeField] private float turnSpeed = 3f;
 
@@ -34,30 +37,49 @@ public class Boss : EnemyBase
 
     private float attackTimer;
 
-    // 突進方向
+    private List<int> attackOrder = new List<int>();
+    private int attackIndex;
     private Vector3 rushDirection;
-
-    // 攻撃中か
-    private bool isAttacking;
-    //突進前の場所保存
     private Vector3 savedPositionBeforeRush;
 
-    private Animator animator;
-
+    private bool isAttacking;
+    private bool isRushing;
 
     private void Start()
     {
+        if (!animator)
+        {
+            animator = GetComponent<Animator>();
+        }
 
-        animator = GetComponent<Animator>();
-
-        // 最初の攻撃まで
         attackTimer = attackInterval;
 
-        // 警告を非表示
-        if (rushWarning != null)
+        if (rushWarning)
         {
             rushWarning.SetActive(false);
         }
+
+        CreateAttackOrder();
+    }
+
+    private void CreateAttackOrder()
+    {
+        attackOrder.Clear();
+
+        attackOrder.Add(0);
+        attackOrder.Add(1);
+        attackOrder.Add(2);
+
+        for (int i = 0; i < attackOrder.Count; i++)
+        {
+            int randomIndex = Random.Range(i, attackOrder.Count);
+
+            int temp = attackOrder[i];
+            attackOrder[i] = attackOrder[randomIndex];
+            attackOrder[randomIndex] = temp;
+        }
+
+        attackIndex = 0;
     }
 
     private void Update()
@@ -65,6 +87,12 @@ public class Boss : EnemyBase
         if (!isAttacking)
         {
             LookAtPlayer();
+        }
+
+        if (isRushing)
+        {
+            RushMove();
+            return;
         }
 
         if (isAttacking)
@@ -80,48 +108,55 @@ public class Boss : EnemyBase
         }
     }
 
-
-
+    // プレイヤーの方向を向く
     private void LookAtPlayer()
     {
-        if (player == null)
+        if (!player)
         {
             return;
         }
 
-        Vector3 direction =
-            player.position - transform.position;
-
+        Vector3 direction = player.position - transform.position;
         direction.y = 0f;
 
-        if (direction == Vector3.zero)
+        if (direction.sqrMagnitude < 0.001f)
         {
             return;
         }
 
-        Quaternion targetRotation  = Quaternion.LookRotation(direction);
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        transform.rotation = Quaternion.Slerp(transform.rotation,targetRotation,turnSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            turnSpeed * Time.deltaTime
+        );
     }
 
-
-
-    // 攻撃選択
+    // 攻撃をランダムに選択
     private void StartRandomAttack()
     {
         isAttacking = true;
 
-        // 0～2
-        int attackType = Random.Range(0, 3);
+        if (attackIndex >= attackOrder.Count)
+        {
+            CreateAttackOrder();
+        }
+
+        int attackType = attackOrder[attackIndex];
+
+        attackIndex++;
+
+        Debug.Log("Boss Attack Type: " + attackType);
 
         switch (attackType)
         {
             case 0:
-                Shoot();
+                StartFireBallAttack();
                 break;
 
             case 1:
-                SpawnTrap();
+                StartTrapAttack();
                 break;
 
             case 2:
@@ -129,135 +164,150 @@ public class Boss : EnemyBase
                 break;
         }
     }
-    // 弾攻撃
-    private void Shoot()
+
+    // ファイヤーボール攻撃開始
+    private void StartFireBallAttack()
     {
-        if (bulletPrefab == null)
+        if (!bulletPrefab)
         {
             Debug.LogWarning("Bullet Prefabが設定されていません");
             EndAttack();
             return;
         }
 
-        if (bulletSpawnPoint == null)
+        if (!bulletSpawnPoint)
         {
             Debug.LogWarning("Bullet Spawn Pointが設定されていません");
             EndAttack();
             return;
         }
 
-        // 弾生成
+        Debug.Log("Boss：ファイヤーボール攻撃開始");
+
+        animator.SetTrigger("FireBall");
+    }
+
+    // Animation Eventから呼ぶ
+    // ファイヤーボールを発射する瞬間に設定
+    public void FireBall()
+    {
+        if (!bulletPrefab || !bulletSpawnPoint)
+        {
+            return;
+        }
+
         GameObject bullet = Instantiate(
             bulletPrefab,
             bulletSpawnPoint.position,
             Quaternion.identity
         );
 
-        // 角度をランダム
-        float angle = Random.Range(
-            minAngle,
-            maxAngle
-        );
+        float angle = Random.Range(minAngle, maxAngle);
 
-        // 左右ランダム
         if (Random.value < 0.5f)
         {
             angle *= -1f;
         }
 
-        // XZ方向
         Vector3 direction = new Vector3(
             Mathf.Cos(angle * Mathf.Deg2Rad),
             0f,
             Mathf.Sin(angle * Mathf.Deg2Rad)
         );
 
-        // TestBullet取得
-        FireBullet testBullet =
-            bullet.GetComponent<FireBullet>();
+        FireBullet fireBullet = bullet.GetComponent<FireBullet>();
 
-        if (testBullet != null)
+        if (fireBullet)
         {
-            testBullet.Initialize(direction);
+            fireBullet.Initialize(direction);
         }
         else
         {
             Debug.LogWarning(
-                "BulletPrefabにTestBulletがありません"
+                "BulletPrefabにFireBulletがありません"
             );
         }
 
-        Debug.Log("Boss：弾攻撃");
-
-        EndAttack();
+        Debug.Log("Boss：ファイヤーボール発射");
     }
-    // トラップ攻撃
-    private void SpawnTrap()
+
+    // トラップ攻撃開始
+    private void StartTrapAttack()
     {
-        if (trapPrefab == null)
+        if (!trapPrefab)
         {
-            Debug.LogWarning(
-                "trapPrefabが設定されていません"
-            );
-
+            Debug.LogWarning("trapPrefabが設定されていません");
             EndAttack();
             return;
         }
 
-        if (spawnPointList == null ||
-            spawnPointList.Count == 0)
+        if (spawnPointList == null || spawnPointList.Count == 0)
         {
-            Debug.LogWarning(
-                "spawnPointListが空です"
-            );
-
+            Debug.LogWarning("spawnPointListが空です");
             EndAttack();
             return;
         }
 
-        // ランダムな場所
+        trapSpawned = false;
+
+        Debug.Log("Boss：トラップ攻撃開始");
+
+        animator.SetTrigger("Trap");
+    }
+
+    // Animation Eventから呼ぶ
+    // トラップを設置する瞬間に設定
+    public void SpawnTrap()
+    {
+        if (trapSpawned)
+        {
+            return;
+        }
+
+        if (!trapPrefab)
+        {
+            return;
+        }
+
+        if (spawnPointList == null || spawnPointList.Count == 0)
+        {
+            return;
+        }
+
+        trapSpawned = true;
+
         int pointIndex = Random.Range(
             0,
             spawnPointList.Count
         );
 
-        Transform spawnPoint =
-            spawnPointList[pointIndex];
+        Transform spawnPoint = spawnPointList[pointIndex];
 
-        // トラップ生成
         Instantiate(
             trapPrefab,
             spawnPoint.position,
             spawnPoint.rotation
         );
 
-        spawnPointList.RemoveAt(pointIndex);
-
-        Debug.Log("Boss：トラップ攻撃");
-
-        EndAttack();
+        Debug.Log("Boss：トラップ設置");
     }
-    // 突進
+
+    // 突進攻撃開始
     private void StartRushAttack()
     {
-        if (player == null)
+        if (!player)
         {
-            Debug.LogWarning(
-                "Playerが設定されていません"
-            );
-
+            Debug.LogWarning("Playerが設定されていません");
             EndAttack();
             return;
         }
 
-        // プレイヤー方向
-        rushDirection =
-            player.position - transform.position;
+        savedPositionBeforeRush = transform.position;
 
-        // Y方向を無視
+        rushDirection = player.position - transform.position;
         rushDirection.y = 0f;
 
-        if (rushDirection == Vector3.zero)
+        if (rushDirection.sqrMagnitude < 0.001f)
         {
             EndAttack();
             return;
@@ -265,19 +315,17 @@ public class Boss : EnemyBase
 
         rushDirection.Normalize();
 
-        // プレイヤー方向を向く
         transform.forward = rushDirection;
-        //突進前の場所を保存
-        savedPositionBeforeRush = transform.position;
 
         Debug.Log("Boss：突進警告開始");
 
         StartCoroutine(RushWarningCoroutine());
     }
-    // 突進警告
+
+    // 突進前の警告
     private IEnumerator RushWarningCoroutine()
     {
-        if (rushWarning != null)
+        if (rushWarning)
         {
             rushWarning.SetActive(true);
         }
@@ -288,8 +336,7 @@ public class Boss : EnemyBase
         {
             timer += Time.deltaTime;
 
-            // 点滅
-            if (rushWarning != null)
+            if (rushWarning)
             {
                 bool visible =
                     Mathf.FloorToInt(timer * 8f) % 2 == 0;
@@ -300,45 +347,63 @@ public class Boss : EnemyBase
             yield return null;
         }
 
-        // 警告を消す
-        if (rushWarning != null)
+        if (rushWarning)
         {
             rushWarning.SetActive(false);
         }
 
+        Debug.Log("Boss：突進アニメーション開始");
+
+        animator.SetTrigger("Rush");
+    }
+
+    // Animation Eventから呼ぶ
+    // 突進モーションが始まる瞬間に設定
+    public void RushStart()
+    {
         Debug.Log("Boss：突進開始");
 
-        // 突進
-        StartCoroutine(RushCoroutine());
+        isRushing = true;
     }
-    // 突進本体
-    private IEnumerator RushCoroutine()
+
+    // 突進中の移動
+    private void RushMove()
     {
-        float timer = 0f;
-
-        while (timer < rushDuration)
-        {
-            transform.position +=
-                rushDirection *
-                rushSpeed *
-                Time.deltaTime;
-
-            timer += Time.deltaTime;
-
-            yield return null;
-        }
-
-        Debug.Log("Boss：突進終了");
-        //保存しておいた場所をポジションに代入
-        transform.position = savedPositionBeforeRush;
-
-        EndAttack();
+        transform.position +=
+            rushDirection *
+            rushSpeed *
+            Time.deltaTime;
     }
-    // 攻撃終了
-    private void EndAttack()
+
+    // Animation Eventから呼ぶ
+    // 突進モーションが終わる瞬間に設定
+    public void RushEnd()
+    {
+        Debug.Log("Boss：突進終了");
+
+        isRushing = false;
+
+        animator.SetTrigger("Return");
+    }
+
+    // Animation Eventから呼ぶ
+    // 戻るモーションの中で設定
+    public void ReturnPosition()
+    {
+        Debug.Log("Boss：元の位置へ戻る");
+
+        transform.position = savedPositionBeforeRush;
+    }
+
+    // Animation Eventから呼ぶ
+    // 攻撃アニメーションの最後に設定
+    public void EndAttack()
     {
         isAttacking = false;
+        isRushing = false;
 
         attackTimer = attackInterval;
+
+        Debug.Log("Boss：攻撃終了");
     }
 }
