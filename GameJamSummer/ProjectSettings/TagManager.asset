@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - TakeDamage
   - Enemy
+  - Eraser
   layers:
   - Default
   - TransparentFX
