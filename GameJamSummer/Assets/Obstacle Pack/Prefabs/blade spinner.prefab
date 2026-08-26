@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 376063988918665488}
   - component: {fileID: 2177754597618081988}
   - component: {fileID: 5012095895665686024}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: blade spinner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,9 +147,9 @@ GameObject:
   - component: {fileID: 2820611540601023372}
   - component: {fileID: 8673961255481101587}
   - component: {fileID: -4104432343826595534}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: blade spinner
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
