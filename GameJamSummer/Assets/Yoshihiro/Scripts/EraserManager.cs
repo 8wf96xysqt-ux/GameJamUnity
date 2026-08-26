@@ -8,7 +8,7 @@ public class EraserManager : MonoBehaviour
     public GameObject m_SpawnPoint;
 
     // 消しゴムのリスポーンタイム
-    private float m_SpawnTime = 3.0f;
+    private float m_SpawnTime = 2.0f;
 
     // スポーンタイマーフラグ
     public bool m_IsStartSpawnTimer { get; set; }
