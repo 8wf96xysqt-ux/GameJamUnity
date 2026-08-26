@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - Obstcales
   - Enemy
+  - Coin
+  - CoinPoint
   layers:
   - Default
   - TransparentFX
