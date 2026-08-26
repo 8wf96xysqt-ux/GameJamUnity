@@ -1,5 +1,6 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TitleScene : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class TitleScene : MonoBehaviour
             // Œˆ’è
             if (TextManager.Instance.m_SelectTextCount == 0)
             {
-
+                SceneManager.LoadScene("PlayScene");
             }
             else if (TextManager.Instance.m_SelectTextCount == 1)
             {
