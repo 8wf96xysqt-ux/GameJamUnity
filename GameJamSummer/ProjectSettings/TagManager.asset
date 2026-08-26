@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - TakeDamage
   - Enemy
+  - BulletDelete
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Enemy
   - Boss
   - Bullet
-  - 
+  - DeleteBulletWall
   - 
   - 
   - 

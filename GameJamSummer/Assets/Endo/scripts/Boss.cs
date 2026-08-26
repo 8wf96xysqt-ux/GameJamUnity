@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Boss : EnemyBase
 {
@@ -34,6 +36,8 @@ public class Boss : EnemyBase
     [Header("突進警告")]
     [SerializeField] private GameObject rushWarning;
     [SerializeField] private float warningTime = 1.5f;
+    [Header("ボスHP")]
+    [SerializeField] private Slider hpSlider;
 
     private float attackTimer;
 
@@ -44,6 +48,7 @@ public class Boss : EnemyBase
 
     private bool isAttacking;
     private bool isRushing;
+    private bool isInvincible;
 
     private void Start()
     {
@@ -51,6 +56,15 @@ public class Boss : EnemyBase
         {
             animator = GetComponent<Animator>();
         }
+
+        base.Start();
+
+        if (hpSlider != null)
+        {
+            hpSlider.maxValue = maxHp;
+            hpSlider.value = currentHp;
+        }
+
 
         attackTimer = attackInterval;
 
@@ -61,6 +75,7 @@ public class Boss : EnemyBase
 
         CreateAttackOrder();
     }
+
 
     private void CreateAttackOrder()
     {
@@ -382,9 +397,11 @@ public class Boss : EnemyBase
         Debug.Log("Boss：突進終了");
 
         isRushing = false;
+        isInvincible = true;
 
         animator.SetTrigger("Return");
     }
+
 
     // Animation Eventから呼ぶ
     // 戻るモーションの中で設定
@@ -401,9 +418,46 @@ public class Boss : EnemyBase
     {
         isAttacking = false;
         isRushing = false;
+        isInvincible = false;
 
         attackTimer = attackInterval;
 
         Debug.Log("Boss：攻撃終了");
     }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            return;
+        }
+
+        if (isInvincible)
+        {
+            return;
+        }
+
+        TakeDamage(1);
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        if (isDead) return;
+
+        currentHp -= damage;
+
+        if (hpSlider != null)
+        {
+            hpSlider.value = currentHp;
+        }
+
+        if (currentHp <= 0)
+        {
+            Die();
+        }
+    }
+
+
+
 }

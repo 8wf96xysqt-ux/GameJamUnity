@@ -154,4 +154,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireBall
   speed: 8
-  maxReflectCount: 6
+  maxReflectCount: 8

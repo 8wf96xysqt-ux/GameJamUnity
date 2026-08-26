@@ -19,6 +19,7 @@ public class Enemy : EnemyBase
 
     private void Start()
     {
+        base.Start();
         animator = GetComponent<Animator>();
         SetNextShootTime();
     }
@@ -72,5 +73,15 @@ public class Enemy : EnemyBase
 
         // 次の攻撃までの時間を設定
         SetNextShootTime();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            return;
+        }
+
+        TakeDamage(1);
     }
 }

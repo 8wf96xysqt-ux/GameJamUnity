@@ -25,6 +25,7 @@ public class Golem : EnemyBase
     private void Start()
     {
         animator = GetComponent<Animator>();
+        base.Start();
     }
 
     private void Update()
@@ -78,5 +79,15 @@ public class Golem : EnemyBase
 
         // 使った生成位置を削除
         spawnPointList.RemoveAt(pointIndex);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            return;
+        }
+
+        TakeDamage(1);
     }
 }

@@ -44,13 +44,18 @@ public class FireBullet : MonoBehaviour
             return;
         }
 
+        if(collision.gameObject.CompareTag("BulletDelete"))
+        {
+            Destroy(this.gameObject);
+        }
+
         reflectCount++;
 
         Debug.Log("反射回数 : " + reflectCount);
 
         if (reflectCount >= maxReflectCount)
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 
