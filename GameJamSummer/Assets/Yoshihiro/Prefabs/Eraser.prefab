@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eraser
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0ba245a7c6e1c804b8c69bfb35b0f589, type: 3}
+      propertyPath: m_TagString
+      value: Eraser
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -59,6 +63,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ba245a7c6e1c804b8c69bfb35b0f589, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4207970142350242017}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ba245a7c6e1c804b8c69bfb35b0f589, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1192895444302800631}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ba245a7c6e1c804b8c69bfb35b0f589, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3706765035516231233}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ba245a7c6e1c804b8c69bfb35b0f589, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6974932154845441150}
   m_SourcePrefab: {fileID: 100100000, guid: 0ba245a7c6e1c804b8c69bfb35b0f589, type: 3}
 --- !u!1 &2758488094408681925 stripped
 GameObject:
@@ -86,3 +99,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.9247413, y: 3.0358932, z: 4.001674}
   m_Center: {x: -0.3598795, y: 1.5281409, z: 0.45749807}
+--- !u!114 &1192895444302800631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758488094408681925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee0fa6305eedee4469036f68ed38a533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EraserMove
+  m_MaxPullDistance: 2
+  m_SpringPower: 400
+  m_Damping: 50
+  m_BackForce: 1000
+  m_ForwardForce: 80
+--- !u!54 &-3706765035516231233
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758488094408681925}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
+--- !u!114 &-6974932154845441150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758488094408681925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084c6a9dc770d8248b9158aaee97330d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EraserController

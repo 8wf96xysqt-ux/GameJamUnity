@@ -30,7 +30,6 @@ public class EraserMove : MonoBehaviour
     // 引っ張っているのかフラグ
     private bool m_IsPulling = false;
 
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,7 +46,6 @@ public class EraserMove : MonoBehaviour
 
         // Zキーの入力情報を取得
         var zKey = currentKeyboard.zKey;
-
         // Zキーを押している間引っ張って離したら発射
         if (zKey.wasPressedThisFrame)
         {
@@ -63,6 +61,12 @@ public class EraserMove : MonoBehaviour
             // 引っ張りフラグをオフ
             m_IsPulling = false;
         }
+
+        // 左右移動
+        if(!m_IsPulling)
+        {
+            Move(currentKeyboard);
+        }
     }
 
     private void FixedUpdate()
@@ -72,6 +76,25 @@ public class EraserMove : MonoBehaviour
         {
             Pulling();
         }
+    }
+
+    // 移動関数
+    void Move(Keyboard current)
+    {
+        // 左右の矢印キーの入力情報を取得
+        var leftArrow = current.leftArrowKey;
+        var rightArrow = current.rightArrowKey;
+
+        // 左右移動
+        if(leftArrow.isPressed)
+        {
+            this.transform.position = this.transform.position + new Vector3(-0.01f, 0.0f, 0.0f);
+        }
+        else if(rightArrow.isPressed)
+        {
+            this.transform.position = this.transform.position + new Vector3(0.01f, 0.0f, 0.0f);
+        }
+
     }
 
     // 引っ張り開始関数

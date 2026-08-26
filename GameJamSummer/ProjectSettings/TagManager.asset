@@ -4,13 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - FxTemporaire
-  - Obstacle
-  - Obstcales
+  - Eraser
   - Wall
-  - TakeDamage
+  - Obstcales
   - Enemy
-  - BulletDelete
   layers:
   - Default
   - TransparentFX
@@ -18,12 +15,12 @@ TagManager:
   - 
   - Water
   - UI
-  - Trap
-  - Player
-  - Enemy
-  - Boss
-  - Bullet
-  - DeleteBulletWall
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -50,11 +47,4 @@ TagManager:
     locked: 0
   m_RenderingLayers:
   - Default
-  - Light Layer 1
-  - Light Layer 2
-  - Light Layer 3
-  - Light Layer 4
-  - Light Layer 5
-  - Light Layer 6
-  - Light Layer 7
   m_MigratedRenderPipelines: []
