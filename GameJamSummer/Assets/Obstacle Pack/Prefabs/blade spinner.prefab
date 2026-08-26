@@ -209,4 +209,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82f1e4c60659c3d4a8e98382410f8267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Trap
-  destroyTime: 5
+  destroyTime: 10

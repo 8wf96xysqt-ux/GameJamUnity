@@ -233,7 +233,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &18662740
 MonoBehaviour:
@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 317744173}
   - component: {fileID: 317744172}
   - component: {fileID: 317744171}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -817,7 +817,7 @@ GameObject:
   - component: {fileID: 647093536}
   - component: {fileID: 647093535}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -862,7 +862,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30EC\u30C3\u30C9\u30C9\u30E9\u30B4\u30F3"
+  m_text: "\u30EC\u30C3\u30C9\u30C9\u30E9\u30B4\u30F3 "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 668811276b821204cad9b141d659a02b, type: 2}
   m_sharedMaterial: {fileID: 3116562939824907038, guid: 668811276b821204cad9b141d659a02b, type: 2}
@@ -1382,7 +1382,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -4.899927, y: 1.1999817}
-  m_SizeDelta: {x: 140, y: 20}
+  m_SizeDelta: {x: 150, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &819510934
 MonoBehaviour:
@@ -3222,7 +3222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42cb0305d41c16246adb0d92ae390f5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss
-  maxHp: 2
+  maxHp: 5
   player: {fileID: 317744174}
   animator: {fileID: 1861702061}
   bulletPrefab: {fileID: 6512504246549903755, guid: 3c54c93aeb367bd4c83eac2ca2d622f0, type: 3}
@@ -3243,6 +3243,7 @@ MonoBehaviour:
   rushWarning: {fileID: 1893797816}
   warningTime: 1.5
   hpSlider: {fileID: 819510934}
+  nextSceneName: GameClear
 --- !u!65 &1861702059
 BoxCollider:
   m_ObjectHideFlags: 0

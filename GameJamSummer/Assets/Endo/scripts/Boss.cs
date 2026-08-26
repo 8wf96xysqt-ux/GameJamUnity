@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 
 public class Boss : EnemyBase
@@ -38,6 +40,10 @@ public class Boss : EnemyBase
     [SerializeField] private float warningTime = 1.5f;
     [Header("ボスHP")]
     [SerializeField] private Slider hpSlider;
+    [Header("死亡")]
+    [SerializeField] private string nextSceneName = "GameClear";
+    private bool isDying;
+
 
     private float attackTimer;
 
@@ -335,6 +341,8 @@ public class Boss : EnemyBase
         Debug.Log("Boss：突進警告開始");
 
         StartCoroutine(RushWarningCoroutine());
+
+        isInvincible = true;
     }
 
     // 突進前の警告
@@ -397,7 +405,7 @@ public class Boss : EnemyBase
         Debug.Log("Boss：突進終了");
 
         isRushing = false;
-        isInvincible = true;
+       
 
         animator.SetTrigger("Return");
     }
@@ -443,7 +451,7 @@ public class Boss : EnemyBase
 
     public override void TakeDamage(int damage)
     {
-        if (isDead) return;
+        if (isDead || isDying) return;
 
         currentHp -= damage;
 
@@ -459,5 +467,39 @@ public class Boss : EnemyBase
     }
 
 
+    protected override void Die()
+    {
+        if (isDying) return;
+
+        isDying = true;
+        isDead = true;
+
+        // 攻撃を停止
+        isAttacking = false;
+        isRushing = false;
+        isInvincible = true;
+
+        // 突進警告を消す
+        if (rushWarning != null)
+        {
+            rushWarning.SetActive(false);
+        }
+
+        // 死亡アニメーション
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+        }
+
+        Debug.Log("Boss：死亡");
+    }
+
+    // 死亡アニメーションの最後にAnimation Eventで呼ぶ
+    public void ChangeScene()
+    {
+        Debug.Log("Boss：死亡アニメーション終了 → シーンチェンジ");
+
+        SceneManager.LoadScene(nextSceneName);
+    }
 
 }
