@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - Coin
   - CoinPoint
+  - BulletDelete
   layers:
   - Default
   - TransparentFX
