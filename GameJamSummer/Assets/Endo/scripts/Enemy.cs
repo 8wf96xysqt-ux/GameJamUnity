@@ -9,11 +9,6 @@ public class Enemy : EnemyBase
     [Header("発射間隔")]
     [SerializeField] private float minShootInterval = 10f;
     [SerializeField] private float maxShootInterval = 15f;
-
-    [Header("発射方向")]
-    [SerializeField] private float minAngle = 20f;
-    [SerializeField] private float maxAngle = 70f;
-
     private Animator animator;
     private float shootTimer;
 
@@ -46,38 +41,50 @@ public class Enemy : EnemyBase
     // Animation Eventから呼び出す
     public void Shoot()
     {
+        if (bulletPrefab == null || bulletSpawnPoint == null)
+        {
+            Debug.LogWarning("BulletPrefabまたはBulletSpawnPointが設定されていません");
+            SetNextShootTime();
+            return;
+        }
+
         GameObject bullet = Instantiate(
             bulletPrefab,
             bulletSpawnPoint.position,
             Quaternion.identity
         );
 
-        // 20～70度の範囲からランダム
-        float angle = Random.Range(minAngle, maxAngle);
+        float angle;
 
-        // 左右どちらか
         if (Random.value < 0.5f)
         {
-            angle *= -1f;
+            angle = Random.Range(40f, 70f);
+        }
+        else
+        {
+            angle = Random.Range(290f,320f);
         }
 
-        // XZ平面上の方向
-        Vector3 direction = new Vector3(
-            Mathf.Cos(angle * Mathf.Deg2Rad),
+        Vector3 direction = Quaternion.Euler(
             0f,
-            Mathf.Sin(angle * Mathf.Deg2Rad)
-        );
+            angle,
+            0f
+        ) * Vector3.back;
 
-        bullet.GetComponent<FireBullet>()
-            .Initialize(direction);
+        FireBullet fireBullet =
+            bullet.GetComponent<FireBullet>();
 
-        // 次の攻撃までの時間を設定
+        if (fireBullet != null)
+        {
+            fireBullet.Initialize(direction);
+        }
+
         SetNextShootTime();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Player"))
+        if (!collision.gameObject.CompareTag("Eraser"))
         {
             return;
         }

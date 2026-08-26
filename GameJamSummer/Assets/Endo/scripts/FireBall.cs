@@ -49,6 +49,11 @@ public class FireBullet : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        if (collision.gameObject.CompareTag("Eraser"))
+        {
+            Destroy(this.gameObject);
+        }
+
         reflectCount++;
 
         Debug.Log("反射回数 : " + reflectCount);

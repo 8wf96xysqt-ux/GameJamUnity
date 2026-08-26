@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+
 public class EnemyBase : MonoBehaviour
 {
     [Header("基本ステータス")]
-    [SerializeField] 
+    [SerializeField]
     protected int maxHp = 10;
+
     protected int currentHp;
     protected bool isDead = false;
 
@@ -27,6 +29,19 @@ public class EnemyBase : MonoBehaviour
     protected virtual void Die()
     {
         isDead = true;
+
+        // WaveManagerに敵を倒したことを通知
+        WaveManager waveManager = FindObjectOfType<WaveManager>();
+
+        if (waveManager != null)
+        {
+            waveManager.EnemyDefeated();
+        }
+        else
+        {
+            Debug.LogWarning("WaveManagerが見つかりません！");
+        }
+
         Destroy(gameObject);
     }
 }

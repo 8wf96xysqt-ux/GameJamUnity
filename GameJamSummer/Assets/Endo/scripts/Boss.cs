@@ -56,6 +56,19 @@ public class Boss : EnemyBase
     private bool isRushing;
     private bool isInvincible;
 
+    public void Initialize(Transform playerTransform, Slider hpSliderTransform)
+    {
+        player = playerTransform;
+        hpSlider = hpSliderTransform;
+
+        if (hpSlider != null)
+        {
+            hpSlider.maxValue = maxHp;
+            hpSlider.value = currentHp;
+        }
+    }
+
+
     private void Start()
     {
         if (!animator)
@@ -65,13 +78,7 @@ public class Boss : EnemyBase
 
         base.Start();
 
-        if (hpSlider != null)
-        {
-            hpSlider.maxValue = maxHp;
-            hpSlider.value = currentHp;
-        }
-
-
+ 
         attackTimer = attackInterval;
 
         if (rushWarning)
