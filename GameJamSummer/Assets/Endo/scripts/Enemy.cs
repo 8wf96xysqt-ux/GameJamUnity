@@ -11,7 +11,6 @@ public class Enemy : EnemyBase
     [SerializeField] private float maxShootInterval = 15f;
     private Animator animator;
     private float shootTimer;
-
     private void Start()
     {
         base.Start();

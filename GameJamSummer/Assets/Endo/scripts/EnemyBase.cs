@@ -11,6 +11,10 @@ public class EnemyBase : MonoBehaviour
     [SerializeField]
     protected float blinkDuration = 0.1f;
 
+    [Header("死亡時ドロップ/エフェクト")]
+    [SerializeField]
+    protected GameObject deathObjectPrefab; 
+
     protected int currentHp;
     protected bool isDead = false;
 
@@ -84,6 +88,17 @@ public class EnemyBase : MonoBehaviour
     {
         isDead = true;
 
+        if (blinkCoroutine != null)
+        {
+            StopCoroutine(blinkCoroutine);
+        }
+        SetRenderers(true);
+        if (deathObjectPrefab != null)
+        {
+            Vector3 spawnPosition = transform.position + new Vector3(0f, 0.5f, 0f);
+            Instantiate(deathObjectPrefab, spawnPosition, Quaternion.identity);
+        }
+
         WaveManager waveManager = FindObjectOfType<WaveManager>();
 
         if (waveManager != null)
@@ -97,4 +112,5 @@ public class EnemyBase : MonoBehaviour
 
         Destroy(gameObject);
     }
+
 }
