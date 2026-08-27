@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -6,12 +7,24 @@ public class EnemyBase : MonoBehaviour
     [SerializeField]
     protected int maxHp = 10;
 
+    [Header("ダメージBlink")]
+    [SerializeField]
+    protected float blinkDuration = 0.1f;
+
     protected int currentHp;
     protected bool isDead = false;
+
+    private Renderer[] renderers;
+    private Coroutine blinkCoroutine;
 
     protected virtual void Start()
     {
         currentHp = maxHp;
+
+        // Rendererを取得
+        renderers = GetComponentsInChildren<Renderer>();
+
+        Debug.Log("Renderer数: " + renderers.Length);
     }
 
     public virtual void TakeDamage(int damage)
@@ -20,9 +33,50 @@ public class EnemyBase : MonoBehaviour
 
         currentHp -= damage;
 
+        Debug.Log("ダメージ！ 現在HP: " + currentHp);
+
+        // すでにBlink中ならリセット
+        if (blinkCoroutine != null)
+        {
+            StopCoroutine(blinkCoroutine);
+        }
+
+        blinkCoroutine = StartCoroutine(DamageBlink());
+
         if (currentHp <= 0)
         {
             Die();
+        }
+    }
+
+    private IEnumerator DamageBlink()
+    {
+        int blinkCount = 3;
+
+        for (int i = 0; i < blinkCount; i++)
+        {
+            // 消す
+            SetRenderers(false);
+
+            yield return new WaitForSeconds(blinkDuration);
+
+            // 表示
+            SetRenderers(true);
+
+            yield return new WaitForSeconds(blinkDuration);
+        }
+
+        blinkCoroutine = null;
+    }
+
+
+    private void SetRenderers(bool enabled)
+    {
+        if (renderers == null) return;
+
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = enabled;
         }
     }
 
@@ -30,7 +84,6 @@ public class EnemyBase : MonoBehaviour
     {
         isDead = true;
 
-        // WaveManagerに敵を倒したことを通知
         WaveManager waveManager = FindObjectOfType<WaveManager>();
 
         if (waveManager != null)
