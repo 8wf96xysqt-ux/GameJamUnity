@@ -1,22 +1,50 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class CoinRotation : MonoBehaviour
 {
-        private int countCoin;
+    private static int countCoin = 0;
 
-        private void Update()
-        {
-            transform.Rotate(0, 150 * Time.deltaTime, 0); // コインを回転させる
-        }
+    [HideInInspector]
+    public TextMeshProUGUI countCoinText;
 
-        void OnTriggerEnter(Collider collison) // コインに触れた時の処理
+    private void Start()
+    {
+        if (countCoinText == null)
         {
-            if (collison.CompareTag("Eraser"))
+            GameObject coinCountObject = GameObject.Find("CoinCount");
+
+            if (coinCountObject != null)
             {
-                Destroy(gameObject); // コインを消す
-
-                countCoin++; // 取得したコインの数を増やす
+                countCoinText = coinCountObject.GetComponent<TextMeshProUGUI>();
             }
         }
 
+        UpdateCoinText();
+    }
+
+    private void Update()
+    {
+        transform.Rotate(0, 150 * Time.deltaTime, 0);
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.CompareTag("Eraser"))
+        {
+            countCoin++;
+
+            UpdateCoinText();
+
+            Destroy(gameObject);
+        }
+    }
+
+    private void UpdateCoinText()
+    {
+        if (countCoinText != null)
+        {
+            countCoinText.text = "×" + countCoin.ToString();
+        }
+    }
 }
