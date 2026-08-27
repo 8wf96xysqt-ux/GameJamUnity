@@ -394,7 +394,7 @@ MonoBehaviour:
   deathObjectPrefab: {fileID: 1970392877506876320, guid: 29f1efa9566176a4ca5c71eb24db75cb, type: 3}
   bulletPrefab: {fileID: 6512504246549903755, guid: 3c54c93aeb367bd4c83eac2ca2d622f0, type: 3}
   bulletSpawnPoint: {fileID: 8680979969987562114}
-  minShootInterval: 1
+  minShootInterval: 3
   maxShootInterval: 5
 --- !u!114 &8622911854146619252
 MonoBehaviour:
