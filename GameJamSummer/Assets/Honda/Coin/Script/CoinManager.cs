@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 
 // コインを時間差でランダム(リスト内からランダムの数選んで)に出現させ、一定時間が経ったら消えるスクリプト
+// 取得した際に効果音を鳴らす処理(このスクリプト内で書く)
 
 public class CoinManager : MonoBehaviour
 {
@@ -19,6 +20,23 @@ public class CoinManager : MonoBehaviour
     [HideInInspector]
     public TextMeshProUGUI countCoinText;
 
+    public static CoinManager Instance { get; private set; }
+
+    private AudioSource audioSource; // コイン取得時の効果音
+    [SerializeField]
+    private AudioClip coinSoundClip; // コイン取得時の効果音クリップ
+
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
     void Start()
     {
         timer = 0.0f;
@@ -34,6 +52,8 @@ public class CoinManager : MonoBehaviour
         {
             countCoinText = GameObject.Find("CoinCount").GetComponent<TextMeshProUGUI>(); // TextMeshProUGUIコンポーネントを取得
         }
+
+        audioSource = GetComponent<AudioSource>(); // AudioSourceコンポーネントを取得
     }
 
 
@@ -78,6 +98,7 @@ public class CoinManager : MonoBehaviour
 
             countCoin++; // 取得したコインの数を増やす
 
+            audioSource.PlayOneShot(coinSoundClip); // コイン取得時の効果音を再生
         }
     }
 }
