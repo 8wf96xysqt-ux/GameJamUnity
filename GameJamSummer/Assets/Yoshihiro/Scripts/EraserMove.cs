@@ -29,11 +29,14 @@ public class EraserMove : MonoBehaviour
 
     // 引っ張っているのかフラグ
     private bool m_IsPulling = false;
+    // 発射フラグ
+    private bool m_IsShoot = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
+        m_IsShoot = false;
     }
 
     // Update is called once per frame
@@ -47,7 +50,7 @@ public class EraserMove : MonoBehaviour
         // Zキーの入力情報を取得
         var zKey = currentKeyboard.zKey;
         // Zキーを押している間引っ張って離したら発射
-        if (zKey.wasPressedThisFrame)
+        if (zKey.wasPressedThisFrame && !m_IsShoot)
         {
             // 引っ張りを開始
              StartPull();
@@ -60,6 +63,7 @@ public class EraserMove : MonoBehaviour
             Release();
             // 引っ張りフラグをオフ
             m_IsPulling = false;
+            m_IsShoot = true;
         }
 
         // 左右移動
