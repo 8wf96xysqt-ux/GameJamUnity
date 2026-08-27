@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,10 +7,10 @@ public class WaveManager : MonoBehaviour
     [System.Serializable]
     public class EnemySpawnData
     {
-        [Header("“G‚ÌPrefab")]
+        [Header("æ•µã®Prefab")]
         public GameObject enemyPrefab;
 
-        [Header("oŒ»”")]
+        [Header("å‡ºç¾æ•°")]
         [Min(1)]
         public int spawnCount = 1;
     }
@@ -18,14 +18,14 @@ public class WaveManager : MonoBehaviour
     [System.Serializable]
     public class WaveData
     {
-        [Header("‚±‚ÌWave‚Åo‚·“G")]
+        [Header("ã“ã®Waveã§å‡ºã™æ•µ")]
         public EnemySpawnData[] enemies;
 
-        [Header("‚±‚ÌWave‚Åg‚¤Spawn Point")]
+        [Header("ã“ã®Waveã§ä½¿ã†Spawn Point")]
         public Transform[] spawnPoints;
     }
 
-    [Header("Waveİ’è")]
+    [Header("Waveè¨­å®š")]
     [SerializeField] private WaveData[] waves;
 
     [Header("Boss")]
@@ -70,7 +70,7 @@ public class WaveManager : MonoBehaviour
     {
         WaveData wave = waves[currentWave];
 
-        // “G‚Ì‡Œv”
+        // æ•µã®åˆè¨ˆæ•°
         enemiesAlive = 0;
 
         foreach (EnemySpawnData enemy in wave.enemies)
@@ -78,7 +78,7 @@ public class WaveManager : MonoBehaviour
             enemiesAlive += enemy.spawnCount;
         }
 
-        // Spawn Point‚ğƒVƒƒƒbƒtƒ‹
+        // Spawn Pointã‚’ã‚·ãƒ£ãƒƒãƒ•ãƒ«
         List<Transform> availablePoints =
             new List<Transform>(wave.spawnPoints);
 
@@ -93,7 +93,7 @@ public class WaveManager : MonoBehaviour
                 if (enemy.enemyPrefab == null)
                 {
                     Debug.LogWarning(
-                        "Enemy Prefab‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                        "Enemy PrefabãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
                     );
 
                     continue;
@@ -102,7 +102,7 @@ public class WaveManager : MonoBehaviour
                 if (pointIndex >= availablePoints.Count)
                 {
                     Debug.LogWarning(
-                        "Spawn Point‚ª‘«‚è‚Ü‚¹‚ñB"
+                        "Spawn PointãŒè¶³ã‚Šã¾ã›ã‚“ã€‚"
                     );
 
                     return;
@@ -123,7 +123,7 @@ public class WaveManager : MonoBehaviour
 
         Debug.Log(
             "Wave " + (currentWave + 1) +
-            " ŠJnI “G”: " + enemiesAlive
+            " é–‹å§‹ï¼ æ•µæ•°: " + enemiesAlive
         );
     }
 
@@ -145,10 +145,10 @@ public class WaveManager : MonoBehaviour
         enemiesAlive--;
 
         Debug.Log(
-            "c‚è“G”F" + enemiesAlive
+            "æ®‹ã‚Šæ•µæ•°ï¼š" + enemiesAlive
         );
 
-        if (enemiesAlive <= 0)
+        if (enemiesAlive == 0)
         {
             currentWave++;
 
@@ -160,37 +160,37 @@ public class WaveManager : MonoBehaviour
     {
         if (bossPrefab == null)
         {
-            Debug.LogWarning("Boss Prefab‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+            Debug.LogWarning("Boss PrefabãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“");
             return;
         }
 
         if (bossSpawnPoint == null)
         {
-            Debug.LogWarning("Boss Spawn Point‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+            Debug.LogWarning("Boss Spawn PointãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“");
             return;
         }
 
-        // Boss‚ğ¶¬
+        // Bossã‚’ç”Ÿæˆ
         GameObject bossObject = Instantiate(
             bossPrefab,
             bossSpawnPoint.position,
             bossSpawnPoint.rotation
         );
 
-        Debug.Log("Boss‚ğƒXƒ|[ƒ“‚µ‚Ü‚µ‚½");
+        Debug.Log("Bossã‚’ã‚¹ãƒãƒ¼ãƒ³ã—ã¾ã—ãŸ");
 
-        // Boss UI‚ğ•\¦
+        // Boss UIã‚’è¡¨ç¤º
         if (bossUI != null)
         {
             bossUI.SetActive(true);
-            Debug.Log("Boss UI‚ğON‚É‚µ‚Ü‚µ‚½");
+            Debug.Log("Boss UIã‚’ONã«ã—ã¾ã—ãŸ");
         }
         else
         {
-            Debug.LogError("bossUI‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñI");
+            Debug.LogError("bossUIãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ï¼");
         }
 
-        // Boss‚ÉPlayer‚ÆHPƒo[‚ğ“n‚·
+        // Bossã«Playerã¨HPãƒãƒ¼ã‚’æ¸¡ã™
         Boss boss = bossObject.GetComponent<Boss>();
 
         if (boss != null)
@@ -202,7 +202,7 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("BossƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñI");
+            Debug.LogError("Bossã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ï¼");
         }
     }
 
