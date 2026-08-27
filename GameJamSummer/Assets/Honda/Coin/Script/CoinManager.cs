@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 // コインを時間差でランダム(リスト内からランダムの数選んで)に出現させ、一定時間が経ったら消えるスクリプト
 
@@ -13,6 +14,11 @@ public class CoinManager : MonoBehaviour
 
     private float timer;       // 経過時間を計測するタイマー 
 
+    private int countCoin = 0;
+
+    [HideInInspector]
+    public TextMeshProUGUI countCoinText;
+
     void Start()
     {
         timer = 0.0f;
@@ -24,6 +30,10 @@ public class CoinManager : MonoBehaviour
             coinPositions.Add(coinpoint.transform.position);
         }
 
+        if (countCoinText == null)
+        {
+            countCoinText = GameObject.Find("Text (TMP)").GetComponent<TextMeshProUGUI>(); // TextMeshProUGUIコンポーネントを取得
+        }
     }
 
 
@@ -54,6 +64,20 @@ public class CoinManager : MonoBehaviour
                     tempPositions.RemoveAt(randomIndex); // 選ばれた位置をリストから削除
                 }
             }
+        }
+    }
+
+    void OnTriggerEnter(Collider collison) // コインに触れた時の処理
+    {
+        if (collison.CompareTag("Eraser"))
+        {
+            if (countCoin != 0)
+            {
+                countCoinText.text = "×" + countCoin.ToString();
+            }
+
+            countCoin++; // 取得したコインの数を増やす
+
         }
     }
 }
