@@ -15,6 +15,9 @@ public class TimeManager : MonoBehaviour
     // 前回の秒数
     private float m_PrevSeconds;
 
+    // シーンの呼び出しフラグ
+    private bool m_IsOnceSceneChange;
+
     public static TimeManager Instance { get; private set; }
 
     private void Awake()
@@ -32,6 +35,7 @@ public class TimeManager : MonoBehaviour
         // トータル時間を計算
         m_TotalTime = m_Minute * 60 + m_Seconds;
         m_PrevSeconds = -1.0f;
+        m_IsOnceSceneChange = false;
     }
 
     void Update()
@@ -40,6 +44,13 @@ public class TimeManager : MonoBehaviour
         if (m_TotalTime <= 0.0f)
         {
             m_TotalTime = 0.0f;
+
+            // 一度だけシーンを呼ぶ
+            if(!m_IsOnceSceneChange)
+            {
+                FadeManager.Instance.LoadScene("GameOverScene");
+                m_IsOnceSceneChange = true;
+            }     
             return;
         }
 

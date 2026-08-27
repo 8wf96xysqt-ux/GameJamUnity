@@ -656,6 +656,6 @@ public class Boss : EnemyBase
             "Boss：死亡アニメーション終了 → シーンチェンジ"
         );
 
-        SceneManager.LoadScene(nextSceneName);
+        FadeManager.Instance.LoadScene(nextSceneName);
     }
 }
