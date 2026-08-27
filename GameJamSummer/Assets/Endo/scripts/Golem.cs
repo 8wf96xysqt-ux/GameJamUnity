@@ -25,8 +25,20 @@ public class Golem : EnemyBase
     private void Start()
     {
         animator = GetComponent<Animator>();
+
+        // シーン上のSpawnPointを取得
+        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+
+        spawnPointList = new List<Transform>();
+
+        foreach (GameObject obj in spawnPoints)
+        {
+            spawnPointList.Add(obj.transform);
+        }
+
         base.Start();
     }
+
 
     private void Update()
     {
