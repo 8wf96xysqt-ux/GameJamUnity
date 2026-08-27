@@ -703,6 +703,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CoinManager
   coinPrefab: {fileID: 1970392877506876320, guid: a79ccba06e7330149ae81f7267bded4d, type: 3}
   displayDelay: 4
+  countCoinText: {fileID: 0}
+  coinSoundClip: {fileID: 8300000, guid: 528f378bccd3f264e93ce6168e3a934b, type: 3}
 --- !u!4 &810215862
 Transform:
   m_ObjectHideFlags: 0
