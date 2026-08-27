@@ -36,6 +36,8 @@ public class CoinRotation : MonoBehaviour
 
             UpdateCoinText();
 
+            CoinManager.Instance.PlaySE();
+
             Destroy(gameObject);
         }
     }

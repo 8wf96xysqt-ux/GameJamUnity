@@ -22,7 +22,9 @@ public class CoinManager : MonoBehaviour
 
     public static CoinManager Instance { get; private set; }
 
+
     private AudioSource audioSource; // コイン取得時の効果音
+
     [SerializeField]
     private AudioClip coinSoundClip; // コイン取得時の効果音クリップ
 
@@ -87,18 +89,8 @@ public class CoinManager : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider collison) // コインに触れた時の処理
+   public void PlaySE()
     {
-        if (collison.CompareTag("Eraser"))
-        {
-            if (countCoin != 0)
-            {
-                countCoinText.text = "×" + countCoin.ToString();
-            }
-
-            countCoin++; // 取得したコインの数を増やす
-
-            audioSource.PlayOneShot(coinSoundClip); // コイン取得時の効果音を再生
-        }
+        audioSource.PlayOneShot(coinSoundClip); // コイン取得時の効果音を再生
     }
 }

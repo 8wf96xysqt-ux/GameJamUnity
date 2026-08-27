@@ -13,6 +13,7 @@ public class Coin : MonoBehaviour
     {
         if (collison.CompareTag("Eraser"))
         {
+            CoinManager.Instance.PlaySE();
             Destroy(gameObject); // コインを消す 
         }
            
