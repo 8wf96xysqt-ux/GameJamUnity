@@ -107,6 +107,8 @@ public class EraserMove : MonoBehaviour
 
         Debug.Log("get joint");
 
+        EraserManager.Instance.PlaySE(SEType.Pulling);
+
         // 接続するアンカーを自動では設定させない
         m_joint.autoConfigureConnectedAnchor = false;
         // アンカーの位置を設定
@@ -137,7 +139,6 @@ public class EraserMove : MonoBehaviour
         // ジョイントがなければ終了
         if (m_joint == null) return;
         this.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-        Debug.Log("Pulling: " + m_rb.linearVelocity);
         // 後ろに引き続ける
         m_rb.AddForce(m_PullDirection* m_BackForce);
     }
@@ -149,7 +150,7 @@ public class EraserMove : MonoBehaviour
         Destroy(m_joint);
         // 現在の速度ベクトルを0に
         m_rb.linearVelocity = Vector3.zero;
-        Debug.Log("aa");
+        EraserManager.Instance.PlaySE(SEType.Shoot);
         // 前に向かって発射
         m_rb.AddForce(this.transform.forward * m_ForwardForce, ForceMode.Impulse);
     }

@@ -4,10 +4,17 @@ using UnityEngine.SceneManagement;
 
 public class TitleScene : MonoBehaviour
 {
+    [SerializeField]
+    private AudioClip CursolMove;
+    [SerializeField]
+    private AudioClip TapEnter;
+
+    AudioSource audioSource;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,10 +37,12 @@ public class TitleScene : MonoBehaviour
         if(upArrowKey.wasPressedThisFrame)
         {
             TextManager.Instance.UpTextCount();
+            audioSource.PlayOneShot(CursolMove);
         }
         else if(downArrowKey.wasPressedThisFrame)
         {
             TextManager.Instance.DownTextCount();
+            audioSource.PlayOneShot(CursolMove);
         }
 
         if(enterKey.wasPressedThisFrame)
@@ -41,7 +50,8 @@ public class TitleScene : MonoBehaviour
             // Œˆ’è
             if (TextManager.Instance.m_SelectTextCount == 0)
             {
-                SceneManager.LoadScene("PlayScene");
+                audioSource.PlayOneShot(TapEnter);
+                FadeManager.Instance.LoadScene("PlayScene");
             }
             else if (TextManager.Instance.m_SelectTextCount == 1)
             {

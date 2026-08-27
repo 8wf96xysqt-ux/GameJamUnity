@@ -32,7 +32,7 @@ public class CoinManager : MonoBehaviour
 
         if (countCoinText == null)
         {
-            countCoinText = GameObject.Find("Text (TMP)").GetComponent<TextMeshProUGUI>(); // TextMeshProUGUIコンポーネントを取得
+            countCoinText = GameObject.Find("CoinCount").GetComponent<TextMeshProUGUI>(); // TextMeshProUGUIコンポーネントを取得
         }
     }
 

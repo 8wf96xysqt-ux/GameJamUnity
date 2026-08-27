@@ -1,4 +1,15 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+
+// SEの種類
+public enum SEType
+{
+    Pulling,
+    Shoot,
+    Bump
+}
 
 public class EraserManager : MonoBehaviour
 {
@@ -6,6 +17,28 @@ public class EraserManager : MonoBehaviour
     public GameObject m_EraserPrefab;
     // スポーンポイント
     public GameObject m_SpawnPoint;
+
+    // SE
+    [SerializeField]
+    private AudioClip Pulling;
+    [SerializeField]  
+    private AudioClip Shoot;
+    [SerializeField]
+    private AudioClip Bump;
+
+    //SEの種類とAudioClipの対応
+    [System.Serializable]
+    private struct SEData
+    {
+        public SEType Type;
+        public AudioClip Clip;
+    }
+
+    [SerializeField] 
+    private List<SEData> m_SeList;
+    private Dictionary<SEType,AudioClip> m_SeDictionary;
+
+    AudioSource audioSource;
 
     // 消しゴムのリスポーンタイム
     private float m_SpawnTime = 2.0f;
@@ -27,15 +60,24 @@ public class EraserManager : MonoBehaviour
         }
 
         Instance = this;
+
+        // リストから辞書を作成
+        m_SeDictionary = new Dictionary<SEType, AudioClip> ();
+
+        foreach(var data in m_SeList)
+        {
+            m_SeDictionary[data.Type] = data.Clip;
+        }
     }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // オーディオソースを取得
+        audioSource = GetComponent<AudioSource>();
         // ゲーム開始時にスポーン
         Spawn();
-
         // スポーンタイマーフラグをオフ
         m_IsStartSpawnTimer = false;
         // スポーンフラグをオフ
@@ -85,4 +127,18 @@ public class EraserManager : MonoBehaviour
             m_SpawnTime = 3.0f;
         }
     }
+
+    // SE再生関数
+    public void PlaySE(SEType type)
+    {
+        if(m_SeDictionary.TryGetValue(type, out AudioClip clip) && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogWarning($"SE再生失敗: {type} / 辞書に存在={m_SeDictionary.ContainsKey(type)}");
+        }
+    }
+    
 }

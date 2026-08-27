@@ -13,6 +13,8 @@ public class EraserController : MonoBehaviour
         {
             Debug.Log("Hit!!!!!!!");
 
+            EraserManager.Instance.PlaySE(SEType.Bump);
+
             // スポーンタイマーをスタート
             EraserManager.Instance.m_IsStartSpawnTimer = true;
 
