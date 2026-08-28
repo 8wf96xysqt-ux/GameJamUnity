@@ -15,18 +15,17 @@ public class CoinManager : MonoBehaviour
 
     private float timer;       // 経過時間を計測するタイマー 
 
-    private int countCoin = 0;
-
     [HideInInspector]
     public TextMeshProUGUI countCoinText;
 
     public static CoinManager Instance { get; private set; }
 
-
     private AudioSource audioSource; // コイン取得時の効果音
 
     [SerializeField]
     private AudioClip coinSoundClip; // コイン取得時の効果音クリップ
+
+    public int countCoin;
 
     private void Awake()
     {
@@ -41,6 +40,8 @@ public class CoinManager : MonoBehaviour
 
     void Start()
     {
+        countCoin = 0;
+
         timer = 0.0f;
         
         GameObject[] coinpoints = GameObject.FindGameObjectsWithTag("CoinPoint");
@@ -56,6 +57,7 @@ public class CoinManager : MonoBehaviour
         }
 
         audioSource = GetComponent<AudioSource>(); // AudioSourceコンポーネントを取得
+
     }
 
 

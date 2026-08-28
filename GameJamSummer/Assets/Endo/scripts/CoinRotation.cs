@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class CoinRotation : MonoBehaviour
 {
-    private static int countCoin = 0;
-
     [HideInInspector]
     public TextMeshProUGUI countCoinText;
 
@@ -35,9 +33,9 @@ public class CoinRotation : MonoBehaviour
     {
         if (collision.CompareTag("Eraser"))
         {
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity); // 爆発エフェクトを生成
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);  // 爆発エフェクトを生成
 
-            countCoin++;
+            CoinManager.Instance.countCoin++;
 
             UpdateCoinText();
 
@@ -46,12 +44,11 @@ public class CoinRotation : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     private void UpdateCoinText()
     {
         if (countCoinText != null)
         {
-            countCoinText.text = "×" + countCoin.ToString();
+            countCoinText.text = "×" + CoinManager.Instance.countCoin.ToString();
         }
     }
 }
