@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class EraserController : MonoBehaviour
 {
+    private PlayCamera m_Camera;
+
+    public void Init(PlayCamera playCamera)
+    {
+        m_Camera = playCamera;
+    }
 
     // 敵と当たり判定
     private void OnCollisionEnter(Collision collision)
@@ -13,7 +19,16 @@ public class EraserController : MonoBehaviour
         {
             Debug.Log("Hit!!!!!!!");
 
+            // SEを再生
             EraserManager.Instance.PlaySE(SEType.Bump);
+            // ヒットエフェクトを再生
+            EraserManager.Instance.PlayEffect(this.transform.position);
+
+            // カメラへ通知
+            if(m_Camera != null)
+            {
+                m_Camera.ClearTarget();
+            }
 
             // スポーンタイマーをスタート
             EraserManager.Instance.m_IsStartSpawnTimer = true;

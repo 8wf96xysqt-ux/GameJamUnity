@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:GameJamSummer/Assets/Casual_Hit.meta
 guid: f2e82d98b2be60e4997eb2c86601c8df
+========
+guid: 0cc00c73964d57246b42efcebccc735d
+>>>>>>>> Stashed changes:GameJamSummer/Assets/Travis Game Assets.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

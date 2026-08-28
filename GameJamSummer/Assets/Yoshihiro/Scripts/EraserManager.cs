@@ -18,6 +18,10 @@ public class EraserManager : MonoBehaviour
     // スポーンポイント
     public GameObject m_SpawnPoint;
 
+    // プレイカメラ
+    [SerializeField]
+    private PlayCamera m_Camera;
+
     // SE
     [SerializeField]
     private AudioClip Pulling;
@@ -25,6 +29,13 @@ public class EraserManager : MonoBehaviour
     private AudioClip Shoot;
     [SerializeField]
     private AudioClip Bump;
+
+    // Effect
+    [SerializeField]
+    private GameObject m_HitEffectPrefab;
+    [SerializeField]
+    private float m_EffectOffsetY;
+
 
     //SEの種類とAudioClipの対応
     [System.Serializable]
@@ -110,7 +121,13 @@ public class EraserManager : MonoBehaviour
     void Spawn()
     {
         Vector3 spawnpoint = m_SpawnPoint.transform.position;
-        Instantiate(m_EraserPrefab, spawnpoint, Quaternion.identity);
+        // 消しゴムを生成
+        GameObject eraser = Instantiate(m_EraserPrefab, spawnpoint, Quaternion.identity);
+        // カメラに追従対象を通知
+        m_Camera.SetTarget(eraser.transform, true);
+        // 消しゴム自身にも「消えるときに使うカメラ」の参照を渡す
+        EraserController controller = eraser.GetComponent<EraserController>();
+        controller.Init(m_Camera);
     }
 
     // スポーンタイマー関数
@@ -139,6 +156,13 @@ public class EraserManager : MonoBehaviour
         {
             Debug.LogWarning($"SE再生失敗: {type} / 辞書に存在={m_SeDictionary.ContainsKey(type)}");
         }
+    }
+
+    // エフェクト再生関数
+    public void PlayEffect(Vector3 position)
+    {
+        position.y += m_EffectOffsetY;
+        Instantiate(m_HitEffectPrefab, position, Quaternion.identity);
     }
     
 }

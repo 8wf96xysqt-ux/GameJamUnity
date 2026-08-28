@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:GameJamSummer/Assets/Casual_Hit/Textures.meta
 guid: 234674acee93cf24fb70830bf7c30426
+========
+guid: 62920d2e352653340849ef87620c6250
+>>>>>>>> Stashed changes:GameJamSummer/Assets/Travis Game Assets/Hit Impact Effects/Textures.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
