@@ -117,3 +117,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7388092d76f0c0444a690e7a5e0449f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinRotation
+  countCoinText: {fileID: 0}
+  explosionPrefab: {fileID: 5415600515078142850, guid: 20f6d30e8d4a1bc4fad9592968ad851a, type: 3}

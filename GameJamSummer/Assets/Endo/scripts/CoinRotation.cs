@@ -8,6 +8,9 @@ public class CoinRotation : MonoBehaviour
     [HideInInspector]
     public TextMeshProUGUI countCoinText;
 
+    [SerializeField]
+    GameObject explosionPrefab; // 爆発エフェクトのプレハブ
+
     private void Start()
     {
         if (countCoinText == null)
@@ -32,6 +35,8 @@ public class CoinRotation : MonoBehaviour
     {
         if (collision.CompareTag("Eraser"))
         {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity); // 爆発エフェクトを生成
+
             countCoin++;
 
             UpdateCoinText();
