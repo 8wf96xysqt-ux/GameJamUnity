@@ -2529,7 +2529,7 @@ MonoBehaviour:
   deathObjectPrefab: {fileID: 0}
   player: {fileID: 0}
   animator: {fileID: 4438791055655120337}
-  bulletPrefab: {fileID: 6512504246549903755, guid: 3c54c93aeb367bd4c83eac2ca2d622f0, type: 3}
+  bulletPrefab: {fileID: 5270635816360023700, guid: 9945e688446e4a24382333adcf5525e6, type: 3}
   bulletSpawnPoint: {fileID: 1636948585349956814}
   minAngle: 20
   maxAngle: 70
